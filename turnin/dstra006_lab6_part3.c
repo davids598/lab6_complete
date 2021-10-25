@@ -83,16 +83,16 @@ void Tick() {
     case (SM_Check):
       cnt = 0;
       currA = ~PINA;
-      if (currA == 0x01 && PORTC <= 8) {
-        PORTC = PORTC + 1;
+      if (currA == 0x01 && PORTB <= 8) {
+        PORTB = PORTB + 1;
         cnt++;
       }
-      else if (currA == 0x02 && PORTC >= 1){
-        PORTC = PORTC - 1;
+      else if (currA == 0x02 && PORTB >= 1){
+        PORTB = PORTB - 1;
         cnt++;
       }
       else if (currA == 0x03) {
-        PORTC = 0x00;
+        PORTB = 0x00;
         cnt++;
       }
       break;
@@ -104,11 +104,11 @@ void Tick() {
     case SM_Held:
       cnt = 0;
       visited = 0x01;
-      if (holdA == 0x01 && PORTC <= 8) {
-        PORTC = PORTC + 1;
+      if (holdA == 0x01 && PORTB <= 8) {
+        PORTB = PORTB + 1;
       }
-      else if (holdA == 0x02 && PORTC >= 1) {
-        PORTC = PORTC - 1;
+      else if (holdA == 0x02 && PORTB >= 1) {
+        PORTB = PORTB - 1;
       }
       break;
 
@@ -126,7 +126,7 @@ int main(void) {
     TimerSet(100);
     TimerOn();
     SM_State = SM_Start;
-    PORTC = 0x07;
+    PORTB = 0x07;
     /* Insert your solution below */
     while (1) {
       Tick();
