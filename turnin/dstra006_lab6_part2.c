@@ -4,7 +4,7 @@
  *	Assignment: Lab #6  Exercise #2
  *	Exercise Description: [optional - include for your own benefit]
  *
- *  Link To Vid:
+ *  Link To Vid: https://youtu.be/0kf8r2evJIg
  *
  *
  *	I acknowledge all content contained herein, excluding template or example
@@ -19,10 +19,14 @@ enum SM_States { SM_LOOP, SM_HOLD, SM_HF } SM_State;
 unsigned int iterate[] = {0x01, 0x02, 0x04};
 signed char i = 0x00;
 unsigned char path = 0x00; //0 = forward. 1 = backwards
+unsigned char currA = 0x00;
+unsigned char holdA = 0x00;
+unsigned char holdHFA = 0x00;
 void Tick() {
   switch(SM_State) {
     case SM_LOOP:
-      if (~PINA == 0x01) {
+      currA = ~PINA;
+      if (currA == 0x01) {
         SM_State = SM_HOLD;
       } else {
         SM_State = SM_LOOP;
@@ -30,7 +34,8 @@ void Tick() {
       break;
 
     case SM_HOLD:
-      if (~PINA == 0x00) {
+      holdA = ~PINA;
+      if (holdA == 0x00) {
         SM_State = SM_HF;
       } else {
         SM_State = SM_HOLD;
@@ -38,7 +43,8 @@ void Tick() {
       break;
 
     case SM_HF:
-      if (~PINA == 0x01) {
+      holdHFA = ~PINA;
+      if (holdHFA == 0x01) {
         SM_State = SM_LOOP;
       } else {
         SM_State = SM_HF;
@@ -68,6 +74,11 @@ void Tick() {
 
       break;
 
+    case SM_HOLD:
+      break;
+    case SM_HF:
+      break;
+
     default:
       break;
   }
@@ -75,7 +86,7 @@ void Tick() {
 
 int main(void) {
     /* Insert DDR and PORT initializations */
-    DDRB = 0xFF; PORTB = 0x01;
+    DDRB = 0xFF; PORTB = 0x00;
     DDRA = 0x00; PORTA = 0xFF;
     TimerSet(300);
     TimerOn();
